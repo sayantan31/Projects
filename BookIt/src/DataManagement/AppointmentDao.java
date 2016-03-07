@@ -61,43 +61,4 @@ public class AppointmentDao {
 			}
 		}
 	}
-	
-	public static boolean removeAppointment(String appointment) {
-		
-		Connection conn = null;
-		Statement st = null;
-		boolean cancelled = true;
-		
-		String sqlQuery = "DELETE FROM APPOINTMENT where appointment_ID=" + appointment;
-		
-		conn = DataStore.getConnection();
-		
-		try {
-			st = conn.prepareStatement(sqlQuery);
-			st.executeUpdate(sqlQuery);
-		} catch (SQLException e) {
-			
-			cancelled = false;
-		}
-		finally {
-
-			if (st != null) {
-				try {
-					st.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-		
-		return cancelled;
-	}
 }

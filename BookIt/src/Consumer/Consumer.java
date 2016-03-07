@@ -3,6 +3,7 @@ package Consumer;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import DataManagement.AppointmentDao;
 import DataManagement.ConsumerDao;
 
 public class Consumer {
@@ -14,7 +15,8 @@ public class Consumer {
 	String myAddress;
 	String myPhone;
 	String myEmail;
-	String myCalendar;
+	Calendar myCalendar;
+	int consumer_id;
 	String[] parts;
 	
 	
@@ -26,6 +28,7 @@ public class Consumer {
 	public Consumer() {
 		parts = new String[8];
 	}
+	
 	
 	public int addSignupDetails(String str) {
 		
@@ -39,73 +42,22 @@ public class Consumer {
 	}
 	
 	
-	public void setFirstName() {
-		first_name = parts[0];
-	}
-	
-	public void setLastName() {
-		last_name = parts[1];
-	}
-	
-	public void setUsername() {
-		myUsername= parts[2];
-	}
-	
-	public void setPassword() {
-		myPassword = parts[3];
-	}
-	
-	public void setAddress() {
-		myAddress = parts[4];
-	}
-	
-	public void setPhone() {
-		myPhone = parts[5];
-	}
-	
-	public void setEmail() {
-		myEmail = parts[6];
-	}
-	
-	public String getFirstName() {
-		return first_name;
-	}
-	
-	public String getLastName() {
-		return last_name;
-	}
-	
-	public String getUsername() {
-		return myUsername;
-	}
-	
-	public String getPassword() {
-		return myPassword;
-	}
-	
-	public String getAddress() {
-		return myAddress;
-	}
-	
-	public String getPhone() {
-		return myPhone;
-	}
-	
-	public String getEmail() {
-		return myEmail;
-	}
-	
-	
-	
-	public void book(Appointment appo) {
+	public int book(String providerName, String consumer_id, Date[] date) {
 		
+		AppointmentDao ad = new AppointmentDao();
 		
+		Appointment app = new Appointment(providerName, date);
 		
+		String[] str = {providerName, consumer_id, app.getDay(), app.getStartTime(), app.getEndTime()};
+		
+		return  ad.addAppointment(str);
 	}
 	
-	public void cancel(Appointment appo) {
+	public void cancel(String appointment) {
 		
+		AppointmentDao ad = new AppointmentDao();
 		
+		ad.removeAppointment(appointment);
 		
 	}
 	
