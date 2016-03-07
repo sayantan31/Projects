@@ -4,25 +4,78 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.HashSet;
+import java.util.Random;
 
 public class ConsumerDao {
 
-	public static int consumer_id = 1000;
+	public static int consumer_id;
 	
 	public static void main(String args[]) {
-		//String[] c1 = {"sayantan", "sengupta", "sayantan31", "archie123", "777 S mathilda ave.", "6692242714", "sayantan31@gmail.com"};
-		//String[] c2 = {"mpatil", "mantu123", "646 San Jose", "6692142287","mpatil1@scu.edu"};
-		//String[] user = {"sayantan31", "archie123"};
-		//addConsumer(c1);
-		//addConsumer(c2);
-		//showResults();
-		//System.out.println(verifyConsumer(user));
+		
+		System.out.println(randomConsumerIDGenerator());
 	}
+	
+	
+	public static HashSet<Integer> getConsumerList() {
+		
+		Connection conn = null;
+		Statement st = null;
+		ResultSet rs = null;
+		HashSet<Integer> hs = new HashSet<>();
+		
+		String sqlQuery = "SELECT * FROM CONSUMER";
+		conn = DataStore.getConnection();
+	
+		try {
+			st = conn.createStatement();
+			rs = st.executeQuery(sqlQuery);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+		}
+	
+		try {
+			while (rs.next()) {
+				hs.add(Integer.parseInt(rs.getString("consumer_ID"))); 
+			}
+		   } catch (SQLException e) {
+				e.printStackTrace();
+		}
+	
+		System.out.println(hs);
+	
+		return hs;
+}
+
+
+	public static int randomConsumerIDGenerator() {
+	
+		Random rand = new Random();
+		int max = 9999;
+		int min = 1000;
+		int consumerID;
+		HashSet<Integer> hs = getConsumerList();
+	
+		while(true) {
+			int rn = rand.nextInt((max - min) + 1) + min;
+		
+			if(!hs.contains(rn)) {
+				consumerID = rn;
+				break;
+			}
+		}
+	
+		return consumerID;
+	}
+	
 	
 	public void addConsumer(String[] consumer) {
 		
 		Connection conn = null;
 		Statement st = null;
+		consumer_id = randomConsumerIDGenerator(); 
+		
 		
 		String sqlQuery = "INSERT INTO CONSUMER (consumer_ID, first_name, last_name, username, "
 				+ "password, address, phone, email)"
@@ -39,8 +92,6 @@ public class ConsumerDao {
 		System.out.println(sqlQuery);
 	
 		conn = DataStore.getConnection();
-		
-		consumer_id += 1;
 		
 		try {
 			st = conn.prepareStatement(sqlQuery);

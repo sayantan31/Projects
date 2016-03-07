@@ -40,62 +40,6 @@ public class ServiceProvider {
 	}
 	
 	
-	public void setFirstName() {
-		first_name = parts[0];
-	}
-	
-	public void setLastName() {
-		last_name = parts[1];
-	}
-	
-	public void setUsername() {
-		myUsername= parts[2];
-	}
-	
-	public void setPassword() {
-		myPassword = parts[3];
-	}
-	
-	public void setAddress() {
-		myAddress = parts[4];
-	}
-	
-	public void setPhone() {
-		myPhone = parts[5];
-	}
-	
-	public void setEmail() {
-		myEmail = parts[6];
-	}
-	
-	public String getFirstName() {
-		return first_name;
-	}
-	
-	public String getLastName() {
-		return last_name;
-	}
-	
-	public String getUsername() {
-		return myUsername;
-	}
-	
-	public String getPassword() {
-		return myPassword;
-	}
-	
-	public String getAddress() {
-		return myAddress;
-	}
-	
-	public String getPhone() {
-		return myPhone;
-	}
-	
-	public String getEmail() {
-		return myEmail;
-	}
-	
 	public int book(String providerName, String consumer_id, Date[] date) {
 		
 		AppointmentDao ad = new AppointmentDao();
@@ -107,11 +51,11 @@ public class ServiceProvider {
 		return  ad.addAppointment(str);
 	}
 	
-	public boolean cancel(String appointment) {
+	public boolean cancel(String appointment_id) {
 		
 		AppointmentDao ad = new AppointmentDao();
 		
-		return ad.removeAppointment(appointment);
+		return ad.removeAppointment(appointment_id);
 		
 	}
 }

@@ -4,58 +4,86 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Random;
 
 import Consumer.Appointment;
 
 public class AppointmentDao {
 
-	public static int appointment_id = 1000;
+	public static int appointment_id;
 	
 	public static void main(String args[]) {
 		
+		ArrayList<String> al = recordsBetween("'%'");
+		
+		System.out.println(al);
 	}
 	
 	/*
-	 * Adds an appointment record in the database
+	 * Loads all the appointment ids from the appointment table to a hashset and returns the hashset
 	 */
 	
-/*	
-public int findMax() {
+	
+		public static HashSet<Integer> getAppointmentList() {
 		
-		Connection conn = null;
-		Statement st = null;
-		ResultSet rs = null;
-		String max = "";
+			Connection conn = null;
+			Statement st = null;
+			ResultSet rs = null;
+			HashSet<Integer> hs = new HashSet<>();
+			
+			String sqlQuery = "SELECT * FROM APPOINTMENT";
+			conn = DataStore.getConnection();
 		
-		String sqlQuery = "SELECT max (appointment_ID) + 1 FROM APPOINTMENT";
-		conn = DataStore.getConnection();
-		
-		try {
-			st = conn.createStatement();
-			rs = st.executeQuery(sqlQuery);
-		} catch (SQLException e) {
+			try {
+				st = conn.createStatement();
+				rs = st.executeQuery(sqlQuery);
+			} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
 		try {
 			while (rs.next()) {
-				max  = rs.getString("appointment_ID");
-
-				System.out.println(max);
-				
+				hs.add(Integer.parseInt(rs.getString("appointment_ID"))); 
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
-		return Integer.parseInt(max);
-}*/
+		System.out.println(hs);
+		
+		return hs;
+}
 	
+
+	public static int randomAppIDGenerator() {
+		
+		Random rand = new Random();
+		int max = 9999;
+		int min = 1000;
+		int appID;
+		HashSet<Integer> hs = getAppointmentList();
+		
+		while(true) {
+			int rn = rand.nextInt((max - min) + 1) + min;
+			
+			if(!hs.contains(rn)) {
+				appID = rn;
+				break;
+			}
+		}
+		
+		return appID;
+	}
+		
 	public int addAppointment(String[] str) {
 		
 		Connection conn = null;
@@ -66,7 +94,7 @@ public int findMax() {
 		String sqlQuery = "INSERT INTO APPOINTMENT (appointment_ID,provider, "
 				+ "consumer_ID, day, start_time, end_time)"
 				+ " VALUES (" 
-				+ appointment_id + "," 
+				+ randomAppIDGenerator() + "," 
 				+ "'" + str[0] + "'," 
 				+ "'" + str[1] + "',"	 
 				+ "'" + str[2] + "',"
@@ -196,7 +224,7 @@ public int findMax() {
 	 *  Returns an arrayList of all the records in a specified time range
 	 */
 	
-	public ArrayList<String> recordsBetween(String consumer_id) {
+	public static ArrayList<String> recordsBetween(String consumer_id) {
 		
 		Connection conn = null;
 		java.sql.ResultSet rs = null;
@@ -204,10 +232,36 @@ public int findMax() {
 		
 		ArrayList<String> al = new ArrayList<>();
 		
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		
+		Date dt = new Date();
+		
+		String d = dateFormat.format(dt);
+		
+		String today = d.split(" ")[0];
+		
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(dt);
+		cal.add(Calendar.DATE, 7);
+		dt = cal.getTime();
+	    
+		d = dateFormat.format(dt);
+		
+		String seventh = d.split(" ")[0];
+		
+		
+		System.out.println("today: " + today);
+		System.out.println("seventh: " + seventh);
+		
+		String sql = "select * from APPOINTMENT where day between \"" + today + "\" AND \"" +  seventh + "\" AND consumer_ID LIKE " + consumer_id + ";";
+		
+		System.out.println(sql);
+		
+		
 		conn = DataStore.getConnection();
 		try {
 			st = conn.createStatement();
-			rs = st.executeQuery("select * from APPOINTMENT where day between '03-03-2016' AND '03-09-2016' AND consumer_ID=" + consumer_id + ";");
+			rs = st.executeQuery(sql);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -223,7 +277,7 @@ public int findMax() {
 					
 				String record = business + " " + date + " " + startTime + " " + endTime + " " + appointment_ID;
 			
-				System.out.println(record);
+				System.out.println("Record: " +  record);
 				
 				al.add(record);
 				

@@ -4,21 +4,77 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.HashSet;
+import java.util.Random;
 
 public class ServiceProviderDao {
-
-	public static int provider_id = 1000;
+	
+	public static int provider_id;
 	
 	public static void main(String args[]) {
-		String[] p1 = {"sayantan31", "archie123", "777 S mathilda ave.", "6692242714", "sayantan31@gmail.com", "123", "HackerRank"};
-		String[] user = {"sayantan31", "archie123"};
-		System.out.println(verifyProvider(user));
+		
+		System.out.println(randomConsumerIDGenerator());
 	}
+	
+	public static HashSet<Integer> getSPList() {
+		
+		Connection conn = null;
+		Statement st = null;
+		ResultSet rs = null;
+		HashSet<Integer> hs = new HashSet<>();
+		
+		String sqlQuery = "SELECT * FROM SERVICE_PROVIDER";
+		conn = DataStore.getConnection();
+	
+		try {
+			st = conn.createStatement();
+			rs = st.executeQuery(sqlQuery);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+		}
+	
+		try {
+			while (rs.next()) {
+				hs.add(Integer.parseInt(rs.getString("provider_ID"))); 
+			}
+		   } catch (SQLException e) {
+				e.printStackTrace();
+		}
+	
+		System.out.println(hs);
+	
+		return hs;
+}
+
+
+	public static int randomConsumerIDGenerator() {
+	
+		Random rand = new Random();
+		int max = 9999;
+		int min = 1000;
+		int providerID;
+		HashSet<Integer> hs = getSPList();
+	
+		while(true) {
+			int rn = rand.nextInt((max - min) + 1) + min;
+		
+			if(!hs.contains(rn)) {
+				providerID = rn;
+				break;
+			}
+		}
+	
+		return providerID;
+	}
+	
+	
 	
 	public  void addProvider(String[] provider) {
 		
 		Connection conn = null;
 		Statement st = null;
+		provider_id = randomConsumerIDGenerator();
 		
 		String sqlQuery = "INSERT INTO SERVICE_PROVIDER (provider_ID, username, "
 				+ "password, address, phone, email,service_type,business_name)"
@@ -35,9 +91,7 @@ public class ServiceProviderDao {
 		System.out.println(sqlQuery);
 	
 		conn = DataStore.getConnection();
-		
-		provider_id += 1;
-		
+				
 		try {
 			st = conn.prepareStatement(sqlQuery);
 			st.executeUpdate(sqlQuery);

@@ -21,8 +21,7 @@ public class Consumer {
 	
 	
 	public static void main(String args[]) {
-		Consumer c = new Consumer();
-		//c.addSignupDetails("sayantan sengupta sayantan31 archie123 mathilda 6692242714 sayantan31@gmail.com");
+		
 	}
 	
 	public Consumer() {
