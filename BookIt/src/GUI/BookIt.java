@@ -962,7 +962,7 @@ public class BookIt extends javax.swing.JFrame {
         try {
             javax.swing.UIManager.LookAndFeelInfo[] installedLookAndFeels=javax.swing.UIManager.getInstalledLookAndFeels();
             for (int idx=0; idx<installedLookAndFeels.length; idx++)
-                if ("GTK".equals(installedLookAndFeels[idx].getName())) {
+                if ("Nimbus".equals(installedLookAndFeels[idx].getName())) {
                     javax.swing.UIManager.setLookAndFeel(installedLookAndFeels[idx].getClassName());
                     break;
                 }
@@ -974,6 +974,25 @@ public class BookIt extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(BookIt.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(BookIt.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+        //</editor-fold>
+        
+                
+        try {// UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+                if (info.getName().equals("Nimbus")) {
+                    UIManager.setLookAndFeel(info.getClassName());
+                    UIDefaults defaults = UIManager.getLookAndFeelDefaults();
+                    defaults.put("Table.gridColor", new Color (214,217,223));
+                    defaults.put("Table.disabled", false);
+                    defaults.put("Table.showGrid", true);
+                    defaults.put("Table.intercellSpacing", new Dimension(1, 1));
+                    break;
+                }
+            }
+        } catch (Exception e) {
+            //e.printStackTrace();
         }
         //</editor-fold>
         //</editor-fold>
