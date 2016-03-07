@@ -5,7 +5,7 @@ import java.util.Date;
 
 public class Appointment {
 
-	private Consumer consumer;
+	private String consumer;
 
 	private String provider;
 
@@ -16,15 +16,14 @@ public class Appointment {
 	private String day;
 	
 	
-	public Appointment(String provider, Date[] date)
+	public Appointment(String str)
 	{
-		this.provider = provider;
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		sTime = sdf.format(date[0]);
-		eTime = sdf.format(date[1]);
-		day = sTime.split(" ")[0];
-		sTime = sTime.split(" ")[1];
-		eTime = eTime.split(" ")[1];
+		String[] s = str.split(" ");
+		this.provider = s[0];
+		this.consumer = s[1];
+		this.day = s[2];
+		this.sTime = s[3];
+		this.eTime = s[4];
 	}
 	
 	public String getProvider() {
@@ -41,6 +40,10 @@ public class Appointment {
 	
 	public String getEndTime() {
 		return eTime;
+	}
+	
+	public String getConsumerID() {
+		return consumer;
 	}
 }
  

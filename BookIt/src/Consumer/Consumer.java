@@ -29,7 +29,6 @@ public class Consumer {
 		parts = new String[8];
 	}
 	
-	
 	public int addSignupDetails(String str) {
 		
 		parts = str.split(" ");
@@ -42,15 +41,22 @@ public class Consumer {
 	}
 	
 	
-	public int book(String providerName, String consumer_id, Date[] date) {
+	public int book(String str) {
+		
+		Calendar cal = new Calendar();
 		
 		AppointmentDao ad = new AppointmentDao();
 		
-		Appointment app = new Appointment(providerName, date);
+		Appointment app = new Appointment(str);
 		
-		String[] str = {providerName, consumer_id, app.getDay(), app.getStartTime(), app.getEndTime()};
-		
-		return  ad.addAppointment(str);
+		if(cal.isValid(app)) {
+			String[] bookstr = {app.getProvider(), app.getConsumerID(), app.getDay(), app.getStartTime(), app.getEndTime()};
+			for(String s : bookstr) {
+				System.out.println(s);
+			}
+			return  ad.addAppointment(bookstr);
+		}
+		return -1;
 	}
 	
 	public void cancel(String appointment) {

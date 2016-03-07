@@ -16,14 +16,14 @@ public class Calendar {
 
 	public static void main(String args[]) {
 		
-		getConsumerCalendar();
+		//getConsumerCalendar();
 	}
 	
 	/*
 	 * Takes a date array as argument. Returns true if no bookings are present at the same time slot.
 	 */
 	
-	public boolean isValid()
+	public boolean isValid(Appointment app)
 	{
 		/*SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String sTime = sdf.format(date[0]);
@@ -32,9 +32,11 @@ public class Calendar {
 		String checkStartTime = sTime.split(" ")[1];
 		String checkEndTime = eTime.split(" ")[1];*/
 		
-		String checkDay = "2016-03-03";
-		String sTime = "6:45";
-		String eTime = "7:15";
+		String checkDay = app.getDay();
+		String sTime = app.getStartTime();
+		String eTime = app.getEndTime();
+		
+		System.out.println(checkDay);
 		
 		AppointmentDao ad = new AppointmentDao();
 		
@@ -52,10 +54,10 @@ public class Calendar {
 			//System.out.println("start: " + start);
 			//System.out.println("end: " + end);
 			
-		//	System.out.println("startTimeDB: " + startTimeDB);
+			//System.out.println("startTimeDB: " + startTimeDB);
 			//System.out.println("endTimeDB: " + endTimeDB);
 			
-			if(startTimeDB < start && endTimeDB > end) {
+			if(startTimeDB < start || endTimeDB > end) {
 				return false;
 			}
 		}
@@ -84,13 +86,19 @@ public class Calendar {
 	 * Returns a hashset of strings for a specific period of time.
 	 */
 	
-	public static void getConsumerCalendar() {
+	public static HashSet<String> getConsumerCalendar(String consumer_id) {
 		AppointmentDao ad = new AppointmentDao();
 		
-		ArrayList<String> al = ad.recordsBetween();
+		ArrayList<String> al = ad.recordsBetween(consumer_id);
+		
+		System.out.println("consumer_id: " + consumer_id);
+		
+		System.out.println(al);
 		
 		HashSet<String> hs = new HashSet<>(al);
 		
 		System.out.println("HashSet: " + hs);
+		
+		return hs;
 	}
 }

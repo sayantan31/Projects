@@ -10,21 +10,21 @@ public class ConsumerDao {
 	public static int consumer_id = 1000;
 	
 	public static void main(String args[]) {
-		String[] c1 = {"sayantan31", "archie123", "777 S mathilda ave.", "6692242714", "sayantan31@gmail.com"};
-		String[] c2 = {"mpatil", "mantu123", "646 San Jose", "6692142287","mpatil1@scu.edu"};
-		String[] user = {"sayantan31", "archie123"};
+		//String[] c1 = {"sayantan", "sengupta", "sayantan31", "archie123", "777 S mathilda ave.", "6692242714", "sayantan31@gmail.com"};
+		//String[] c2 = {"mpatil", "mantu123", "646 San Jose", "6692142287","mpatil1@scu.edu"};
+		//String[] user = {"sayantan31", "archie123"};
 		//addConsumer(c1);
 		//addConsumer(c2);
 		//showResults();
-		System.out.println(verifyConsumer(user));
+		//System.out.println(verifyConsumer(user));
 	}
 	
-	public static void addConsumer(String[] consumer) {
+	public void addConsumer(String[] consumer) {
 		
 		Connection conn = null;
 		Statement st = null;
 		
-		String sqlQuery = "INSERT INTO CONSUMER (consumer_ID, username, "
+		String sqlQuery = "INSERT INTO CONSUMER (consumer_ID, first_name, last_name, username, "
 				+ "password, address, phone, email)"
 				+ " VALUES (" 
 				+ consumer_id + "," 
@@ -32,7 +32,9 @@ public class ConsumerDao {
 				+ "'" + consumer[1] + "'," 
 				+ "'" + consumer[2] + "',"
 				+ "'" + consumer[3] + "'," 
-				+ "'" + consumer[4] + "')";
+				+ "'" + consumer[4] + "'," 
+				+ "'" + consumer[5] + "'," 
+				+ "'" + consumer[6] + "')";
 		
 		System.out.println(sqlQuery);
 	
@@ -68,18 +70,20 @@ public class ConsumerDao {
 	}
 	
 	
-	private static boolean verifyConsumer(String[] str) {
+	public static String verifyConsumer(String[] str) {
 		Connection conn = null;
 		Statement st = null;
 		ResultSet rs = null;
 		String passwd = "";
 		conn = DataStore.getConnection();
+		String id = "";
 		
 		try {
 			st = conn.createStatement();
 			rs = st.executeQuery("Select * from CONSUMER where username='" + str[0] +"'");
 			if(rs.next()) {
 				passwd = rs.getString("password");
+				id = rs.getString("consumer_ID");
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -87,10 +91,10 @@ public class ConsumerDao {
 		}
 		
 		if(passwd.equals(str[1])) {
-			return true;
+			return id;
 		}
 		else {
-			return false;
+			return "";
 		}
 	}
 }

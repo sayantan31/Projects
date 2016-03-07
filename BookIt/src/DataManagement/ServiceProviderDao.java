@@ -15,7 +15,7 @@ public class ServiceProviderDao {
 		System.out.println(verifyProvider(user));
 	}
 	
-	public static void addProvider(String[] provider) {
+	public  void addProvider(String[] provider) {
 		
 		Connection conn = null;
 		Statement st = null;
