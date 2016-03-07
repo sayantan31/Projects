@@ -318,7 +318,7 @@ public class BookIt extends javax.swing.JFrame {
         jUsernameLabel = new javax.swing.JLabel();
         jPasswordLabel = new javax.swing.JLabel();
         jUsernameField = new javax.swing.JTextField();
-        jPasswordField = new javax.swing.JTextField();
+        jPasswordField = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Login Screen");
@@ -721,26 +721,36 @@ public class BookIt extends javax.swing.JFrame {
                 int startHour = Integer.parseInt(startTime.substring(0, startTime.indexOf(':')));
                 int endHour = Integer.parseInt(endTime.substring(0, endTime.indexOf(':')));
                 //end at *:00
-                if( endTime.substring(endTime.indexOf(':')+1, endTime.length()).equals("00") )
+                if( startHour != endHour )
                 {
-                    if( currHour >= startHour && currHour < endHour )
+                    if( endTime.substring(endTime.indexOf(':')+1, endTime.length()).equals("00") )
                     {
-                        jCalendar.setValueAt("yes", i, desiredCol);
+                        if( currHour >= startHour && currHour < endHour )
+                        {
+                            jCalendar.setValueAt("yes", i, desiredCol);
+                        }
+                    }
+                    else if( endTime.substring(endTime.indexOf(':')+1, endTime.length()).equals("30") )
+                    {
+                        if( currHour >= startHour && currHour < endHour )
+                        {
+                            jCalendar.setValueAt("yes", i, desiredCol);
+                            jCalendar.setValueAt("yes", i+1, desiredCol);
+                        }
+                    }
+                    if( startTime.substring(startTime.indexOf(':')+1, startTime.length()).equals("30") )
+                    {
+                        if( currHour == startHour && (hour.substring(hour.indexOf(':')+1, hour.length()).equals("00")) )
+                        {
+                            jCalendar.setValueAt("", i, desiredCol);
+                        }
                     }
                 }
-                if( endTime.substring(endTime.indexOf(':')+1, endTime.length()).equals("30") )
+                else
                 {
-                    if( currHour >= startHour && currHour < endHour )
+                    if( hour.equals(startTime) )
                     {
-                        jCalendar.setValueAt("yes", i, desiredCol);
-                        jCalendar.setValueAt("yes", i+1, desiredCol);
-                    }
-                }
-                if( startTime.substring(startTime.indexOf(':')+1, startTime.length()).equals("30") )
-                {
-                    if( currHour == startHour && (hour.substring(hour.indexOf(':')+1, hour.length()).equals("00")) )
-                    {
-                        jCalendar.setValueAt("", i, desiredCol);
+                        jCalendar.setValueAt("yes", i, desiredCol);                        
                     }
                 }
             }
@@ -885,26 +895,36 @@ public class BookIt extends javax.swing.JFrame {
                 int startHour = Integer.parseInt(startTime.substring(0, startTime.indexOf(':')));
                 int endHour = Integer.parseInt(endTime.substring(0, endTime.indexOf(':')));
                 //end at *:00
-                if( endTime.substring(endTime.indexOf(':')+1, endTime.length()).equals("00") )
+                if( startHour != endHour )
                 {
-                    if( currHour >= startHour && currHour < endHour )
+                    if( endTime.substring(endTime.indexOf(':')+1, endTime.length()).equals("00") )
                     {
-                        jCalendar.setValueAt("yes", i, desiredCol);
+                        if( currHour >= startHour && currHour < endHour )
+                        {
+                            jCalendar.setValueAt("yes", i, desiredCol);
+                        }
+                    }
+                    else if( endTime.substring(endTime.indexOf(':')+1, endTime.length()).equals("30") )
+                    {
+                        if( currHour >= startHour && currHour < endHour )
+                        {
+                            jCalendar.setValueAt("yes", i, desiredCol);
+                            jCalendar.setValueAt("yes", i+1, desiredCol);
+                        }
+                    }
+                    if( startTime.substring(startTime.indexOf(':')+1, startTime.length()).equals("30") )
+                    {
+                        if( currHour == startHour && (hour.substring(hour.indexOf(':')+1, hour.length()).equals("00")) )
+                        {
+                            jCalendar.setValueAt("", i, desiredCol);
+                        }
                     }
                 }
-                if( endTime.substring(endTime.indexOf(':')+1, endTime.length()).equals("30") )
+                else
                 {
-                    if( currHour >= startHour && currHour < endHour )
+                    if( hour.equals(startTime) )
                     {
-                        jCalendar.setValueAt("yes", i, desiredCol);
-                        jCalendar.setValueAt("yes", i+1, desiredCol);
-                    }
-                }
-                if( startTime.substring(startTime.indexOf(':')+1, startTime.length()).equals("30") )
-                {
-                    if( currHour == startHour && (hour.substring(hour.indexOf(':')+1, hour.length()).equals("00")) )
-                    {
-                        jCalendar.setValueAt("", i, desiredCol);
+                        jCalendar.setValueAt("yes", i, desiredCol);                        
                     }
                 }
             }
